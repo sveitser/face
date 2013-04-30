@@ -36,8 +36,10 @@ def shoot_user(npics, name):
 def main():
     setup()
     print cam.getAllProperties()
-    shoot_user(3,"Mathis")
-
+    while True:
+        print("Enter name of suspect and press enter.")
+        name = raw_input()
+        shoot_user(10, name)
 
 if __name__ == "__main__":
     main()
