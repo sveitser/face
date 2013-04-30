@@ -5,7 +5,7 @@ import os, sys, time
 camera_id = 0
 cam = scv.Camera(camera_id)
 picsdir = "data"
-interval_seconds = 2
+interval_seconds = 1
 
 def mkdir(name):
     try: 
