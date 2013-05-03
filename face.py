@@ -1,12 +1,14 @@
 #!/usr/bin/env python2
 import SimpleCV as scv
+from SimpleCV.Features import FaceRecognizer
 import numpy as np
-import os, sys, time
+import itertools, os, sys, time
 
 camera_id = 0
 cam = scv.Camera(camera_id)
 picsdir = "data"
 interval_seconds = 1
+fr = FR()
 
 def mkdir(name):
     try: 
@@ -26,7 +28,7 @@ def save_raw(fname):
 
 def find_face(img):
     for n in ["", "2", "3", "4"]:
-        face = img.findHaarFeatures("face.xml")
+        face = img.findHaarFeatures("face{0}.xml")
         if len(face) == 1:
             img = face[0].crop()
             break
@@ -63,6 +65,20 @@ def shoot_user(npics, name):
             n_taken += 1
             time.sleep(interval_seconds)
         n += 1
+
+def train_face_recog():
+    fr = FaceRecognizer()
+    sets = os.listdir(picsdir)
+    imgs, labels = [], []
+    for s in sets:
+        print(s)
+        i = scv.ImageSet("{0}/{1}".format(picsdir,s))
+        labels += ["".join([c for c in s if c.isalnum()])] * len(i)
+        imgs += i
+   
+    fr.train(imgs, labels)
+    return fr
+
 
 def main():
     setup()
